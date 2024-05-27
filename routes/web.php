@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScrpController;
+use App\Http\Controllers\TestdbController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -29,6 +31,18 @@ Route::get('/mausetest', function () {
 // Route::get('/scrptest', [ScrpController::class, 'scrapetest']);
 Route::get('/scrptest', [ScrpController::class, 'scrapesumo']);
 
+Route::get('/testres', function () {
+
+    $meta = Storage::get('public');
+    $body = Storage::get('public/body.html');
+    $test = Storage::get('public/test.html');
+
+    $htmlinfo = '<!DOCTYPE html><html lang="ja">'.$meta.'<body>'.$body.$test.'</body></html>';
+
+    return $htmlinfo;
+});
+
+Route::post('/testres/{testdb}', [TestdbController::class,"update"]);
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

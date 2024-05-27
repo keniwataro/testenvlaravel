@@ -1,0 +1,45 @@
+
+<div id="testcnt"></div>
+
+<script>
+          // 2秒ごとに非同期通信を行う関数
+  const fetchData = async () => {
+    try {
+      // 通信先のURLを指定
+      const url = `/testres/2`;
+
+      // 非同期通信を実行
+      const response = await fetch(
+          url,
+          {
+              method: "POST",
+              body: JSON.stringify({
+                  count: 1,
+              }),
+          }
+      );
+
+      
+      // レスポンスのステータスを確認
+      if (!response.ok) {
+        throw new Error(`通信に失敗しました: ${response.status}`);
+      }
+
+      // レスポンスのJSONデータを取得
+      const data = await response.json();
+
+      // 取得したデータを処理
+      const testCntDiv = document.getElementById('testcnt'); // id="testcnt"のdiv要素を取得
+      testCntDiv.textContent = data.count; // div要素にデータのcountプロパティを表示
+
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // 2秒後に再度呼び出す
+      setTimeout(fetchData, 2000);
+    }
+  };
+
+  // 最初に非同期通信を実行
+  fetchData();
+</script>
